@@ -1,13 +1,16 @@
-from .app import app
+from .app import app, tasks
 
 import pytest
-import json
 
 @pytest.fixture
 def client():
     app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
+
+@pytest.fixture(autouse=True)
+def reset_tasks():
+    tasks.clear()
 
 def test_get_tasks_empty(client):
     response = client.get('/tasks')
