@@ -21,7 +21,6 @@ jobs:
           poetry install
       - name: Run tests
         run: poetry run pytest
-
   build:
     name: Build and push image
     runs-on: ubuntu-latest
@@ -43,7 +42,6 @@ jobs:
           context: .
           push: true
           tags: amiiira/poetry_project:latest
-
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
