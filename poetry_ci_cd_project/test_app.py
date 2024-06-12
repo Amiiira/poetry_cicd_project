@@ -1,47 +1,72 @@
-from .app import app, tasks
-
 import pytest
+from .app import app
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
 
-@pytest.fixture(autouse=True)
-def reset_tasks():
-    tasks.clear()
-
-def test_get_tasks_empty(client):
-    response = client.get('/tasks')
+def test_add(client):
+    response = client.get('/add?a=1&b=2')
     assert response.status_code == 200
-    assert response.json == {'tasks': []}
+    assert response.json == {'result': 3}
 
-def test_create_task(client):
-    response = client.post('/tasks', json={'title': 'Task 1'})
-    assert response.status_code == 201
-    assert response.json['title'] == 'Task 1'
-
-def test_get_tasks_with_task(client):
-    client.post('/tasks', json={'title': 'Task 1'})
-    response = client.get('/tasks')
+def test_subtract(client):
+    response = client.get('/subtract?a=5&b=3')
     assert response.status_code == 200
-    assert len(response.json['tasks']) == 1
-    assert response.json['tasks'][0]['title'] == 'Task 1'
+    assert response.json == {'result': 2}
 
-def test_get_task(client):
-    response_create = client.post('/tasks', json={'title': 'Task 1'})
-    task_id = response_create.json['id']
-    response_get = client.get(f'/tasks/{task_id}')
-    assert response_get.status_code == 200
-    assert response_get.json['title'] == 'Task 1'
+def test_multiply(client):
+    response = client.get('/multiply?a=4&b=3')
+    assert response.status_code == 200
+    assert response.json == {'result': 12}
 
-def test_get_nonexistent_task(client):
-    response = client.get('/tasks/999')
-    assert response.status_code == 404
-    assert response.json['message'] == 'Task not found'
+def test_divide(client):
+    response = client.get('/divide?a=10&b=2')
+    assert response.status_code == 200
+    assert response.json == {'result': 5}
 
-def test_create_task_missing_title(client):
-    response = client.post('/tasks', json={})
+def test_divide_by_zero(client):
+    response = client.get('/divide?a=10&b=0')
     assert response.status_code == 400
-    assert response.json['message'] == 'Title is required'
+    assert response.json == {'error': 'Division by zero'}
+
+def test_factorial(client):
+    response = client.get('/factorial?n=5')
+    assert response.status_code == 200
+    assert response.json == {'result': 120}
+
+def test_factorial_negative(client):
+    response = client.get('/factorial?n=-1')
+    assert response.status_code == 400
+    assert response.json == {'error': 'Factorial is not defined for negative numbers'}
+
+def test_sqrt(client):
+    response = client.get('/sqrt?x=16')
+    assert response.status_code == 200
+    assert response.json == {'result': 4}
+
+def test_sqrt_negative(client):
+    response = client.get('/sqrt?x=-1')
+    assert response.status_code == 400
+    assert response.json == {'error': 'Square root is not defined for negative numbers'}
+
+def test_power(client):
+    response = client.get('/power?a=2&b=3')
+    assert response.status_code == 200
+    assert response.json == {'result': 8}
+
+def test_median(client):
+    response = client.get('/median?values=1&values=3&values=5')
+    assert response.status_code == 200
+    assert response.json == {'result': 3}
+
+def test_median_empty(client):
+    response = client.get('/median')
+    assert response.status_code == 400
+    assert response.json == {'error': 'Missing parameters'}
+
+def test_missing_parameters(client):
+    response = client.get('/add?a=1')
+    assert response.status_code == 400
+    assert response.json == {'error': 'Missing parameters'}
