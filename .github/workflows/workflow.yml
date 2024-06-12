@@ -43,7 +43,7 @@ jobs:
       - name: Push to DockerHub
         uses: docker/build-push-action@v4
         with:
-          context: ./poetry_ci_cd_project/
+          context: .
           push: true
           tags: amiiira/poetry_project:latest
 
