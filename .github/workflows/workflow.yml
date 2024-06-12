@@ -61,4 +61,4 @@ jobs:
           sudo docker stop $(sudo docker ps -q) || true
           sudo docker rm $(sudo docker ps -a -q) || true
           sudo docker compose -f docker pull amiiira/poetry_project:latest
-          sudo docker run -d -p 8080:80 amiiira/poetry_project:latest
+          sudo docker run -d -p 80:80 amiiira/poetry_project:latest
