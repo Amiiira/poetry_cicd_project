@@ -8,19 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.12']  # Используйте правильную версию Python
+        python-version: ['3.12']
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}  # Убедитесь, что версия Python совпадает с версией в матрице
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install poetry
-          poetry env use python3.12  # Явно указываем использовать Python 3.12
+          poetry env use python3.12
           poetry install
       - name: Run tests
         run: poetry run pytest
