@@ -10,4 +10,4 @@ RUN pip install poetry \
 
 COPY . .
 
-CMD ["python", "app.py"]
+CMD ["python", "poetry_ci_cd_project/app.py"]
