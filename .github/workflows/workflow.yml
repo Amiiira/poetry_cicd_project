@@ -19,9 +19,10 @@ jobs:
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           cd poetry_project
-          sudo docker compose -f docker-compose.yml pull amiiira/poetry_project:latest
-          sudo docker compose -f docker-compose.yml down
-          sudo docker compose -f docker-compose.yml up -d
+          mkdir 123
+        # sudo docker compose -f docker-compose.yml pull amiiira/poetry_project:latest
+        # sudo docker compose -f docker-compose.yml down
+        # sudo docker compose -f docker-compose.yml up -d
   # test:
   #   name: Test
   #   runs-on: ubuntu-latest
