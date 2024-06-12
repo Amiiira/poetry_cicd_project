@@ -61,7 +61,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
-          cd poetry_ci_cd_project
-          sudo docker compose -f docker-compose.yml pull
+          cd poetry_project
+          sudo docker compose -f docker-compose.yml pull amiiira/poetry_project:latest
           sudo docker compose -f docker-compose.yml down
           sudo docker compose -f docker-compose.yml up -d
